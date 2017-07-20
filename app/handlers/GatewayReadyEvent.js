@@ -27,12 +27,12 @@ class GatewayReadyEvent extends EventHandler {
     handle(socket) {
         app.logger.log('cyan', '', chalk => {
             return chalk.cyan([
-                `\n==================== Started at ${chalk.yellow(moment().format('H:mm:ss'))} ====================`,
+                `\n================= Started at ${chalk.yellow(moment().format('H:mm:ss'))} =================`,
                 `| Logged in as ${chalk.yellow(`${bot.User.username}#${bot.User.discriminator}`)}.`,
                 `| Connected to ${chalk.yellow(bot.Guilds.length)} servers and ${chalk.yellow(bot.Channels.length)} channels`,
                 `| Logging was successful. Waiting for orders...`,
                 `| Use ${chalk.yellow('Control + C')} to exit. Or ${chalk.yellow('Cmd + C')} for Mac.`,
-                `=============================================================\n`
+                `=======================================================\n`
             ].join('\n'));
         }, false);
     }

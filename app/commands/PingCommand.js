@@ -21,7 +21,7 @@ class PingCommand extends Command {
      * @return {mixed}
      */
     onCommand(sender, message, args) {
-        return app.envoyer.sendInfo(message, 'Pong!');
+        return message.edit('Ping, Pong!');
     }
 }
 
