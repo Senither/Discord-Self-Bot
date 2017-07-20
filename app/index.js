@@ -1,4 +1,5 @@
 module.exports = {
+    commands: require('./CommandRegistry'),
     handlers: require('./HandlerRegistry'),
 
     // Utilities

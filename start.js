@@ -25,5 +25,7 @@ bot.Dispatcher.onAny((type, socket) => {
     }
 });
 
+app.logger.info(` - Registered ${Object.keys(app.commands).length} commands`);
+
 app.logger.info('Connecting to the Discord network...');
 bot.connect({token: app.config.token});
