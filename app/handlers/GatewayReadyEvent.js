@@ -1,4 +1,6 @@
 /** @ignore */
+const moment = require('moment');
+/** @ignore */
 const EventHandler = require('./EventHandler');
 
 /**
@@ -23,9 +25,16 @@ class GatewayReadyEvent extends EventHandler {
      * @return {mixed}
      */
     handle(socket) {
-        app.logger.info(
-            `Logged in as ${bot.User.username}#${bot.User.discriminator} (ID: ${bot.User.id})`
-        );
+        app.logger.log('cyan', '', chalk => {
+            return chalk.cyan([
+                `\n==================== Started at ${chalk.yellow(moment().format('H:mm:ss'))} ====================`,
+                `| Logged in as ${chalk.yellow(`${bot.User.username}#${bot.User.discriminator}`)}.`,
+                `| Connected to ${chalk.yellow(bot.Guilds.length)} servers and ${chalk.yellow(bot.Channels.length)} channels`,
+                `| Logging was successful. Waiting for orders...`,
+                `| Use ${chalk.yellow('Control + C')} to exit. Or ${chalk.yellow('Cmd + C')} for Mac.`,
+                `=============================================================\n`
+            ].join('\n'));
+        }, false);
     }
 }
 
