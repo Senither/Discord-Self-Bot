@@ -72,7 +72,7 @@ class Logger {
             message = message(chalk);
         }
 
-        if (_.isObjectLike(message)) {
+        if (_.isObjectLike(message) && message.constructor.name === 'Array') {
             message = message.join(' ');
         }
 
