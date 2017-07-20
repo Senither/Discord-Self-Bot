@@ -1,2 +1,8 @@
+'use strict';
+process.title = 'Watchdog';
 
-console.log('Hello World!');
+global.app = require('./app');
+
+const Discordie = require('discordie');
+
+app.logger.info('Hello World');
