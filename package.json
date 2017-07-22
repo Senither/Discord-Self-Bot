@@ -1,6 +1,6 @@
 {
     "name": "Watchdog",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "A simple Discord self-bot written for the AvaIre Discord bot.",
     "main": "start.js",
     "maintainers": [

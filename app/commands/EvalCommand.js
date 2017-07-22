@@ -72,7 +72,7 @@ class EvalCommand extends Command {
         message = this.hideElemenets(message);
 
         if (message.length > 1890) {
-            message = this.substr(0, 1890).trim() + '...';
+            message = message.substr(0, 1890).trim() + '...';
         }
 
         return '```xl\n' + message + '```';
