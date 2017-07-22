@@ -27,41 +27,38 @@ class EvalCommand extends Command {
     onCommand(sender, message, args) {
         message.edit('**Input:**\n```javascript\n' + args.join(' ') + '```');
 
-        return this.parse(args.join(' ')).then(result => {
-            return message.channel.sendMessage('**Output:**\n' + result);
-        }).catch(err => app.logger.error(err));
+        let evalString = args.join(' ');
+        let evalArray = evalString.split('\n');
+
+        if (_.startsWith(evalArray[0], '```') && _.startsWith(evalArray[evalArray.length - 1], '```')) {
+            delete evalArray[0];
+            delete evalArray[evalArray.length - 1];
+        }
+
+        evalString = evalArray.join('\n');
+
+        try {
+            let evalObject = eval(evalString);
+            if (evalObject !== undefined && evalObject !== null && typeof evalObject.then === 'function') {
+                evalObject.then(() => {
+                    return this.sendEvalMessage(message, this.inspect(evalObject));
+                }).catch(err => this.sendEvalMessage(message, this.inspect(err)));
+            }
+            return this.sendEvalMessage(message, this.inspect(evalObject));
+        } catch (err) {
+            return this.sendEvalMessage(message, this.inspect(err));
+        }
     }
 
     /**
-     * Parses the message, evaluating the given message.
+     * Sends the eval result using the given IMessage object.
      *
-     * @param  {String}  message  The message that should be evaluated.
+     * @param  {IMessage}  message  The Discordie message object to send the result to.
+     * @param  {String}    result   The result of the code eval.
      * @return {Promise}
      */
-    parse(message) {
-        return new Promise((resolve, reject) => {
-            let evalString = message.trim();
-            let evalArray = evalString.split('\n');
-
-            if (_.startsWith(evalArray[0], '```') && _.startsWith(evalArray[evalArray.length - 1], '```')) {
-                delete evalArray[0];
-                delete evalArray[evalArray.length - 1];
-            }
-
-            evalString = evalArray.join('\n');
-
-            try {
-                let evalObject = eval(evalString);
-                if (evalObject !== undefined && evalObject !== null && typeof evalObject.then === 'function') {
-                    evalObject.then(() => {
-                        return resolve(this.inspect(evalObject));
-                    }).catch(err => resolve(this.inspect(err)));
-                }
-                return resolve(this.inspect(evalObject));
-            } catch (err) {
-                return resolve(this.inspect(err));
-            }
-        });
+    sendEvalMessage(message, result) {
+        return message.channel.sendMessage('**Output:**\n' + result);
     }
 
     /**
