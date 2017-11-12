@@ -18,10 +18,24 @@ class MessageCreateEvent extends EventHandler {
      */
     handle(socket) {
         if (bot.User.id !== socket.message.author.id) {
+            if (app.global.away.enabled && this.isMentioned(socket.message.content)) {
+                app.envoyer.sendNormalMessage(socket.message, this.awayMessage, {}, false).then(sentMessage => {
+                    setTimeout(() => app.envoyer.delete(sentMessage), 12000);
+                });
+            }
             return;
         }
 
         let message = socket.message.content;
+        if (message.startsWith('\u200B')) {
+            return;
+        }
+
+        if (app.global.away.enabled) {
+            app.global.away.enabled = false;
+            app.global.away.message = null;
+        }
+
         let command = this.getCommand(message);
 
         // Checks to see if a valid command was found from the message context, if a
@@ -57,6 +71,25 @@ class MessageCreateEvent extends EventHandler {
         }
 
         return null;
+    }
+
+    /**
+     * Checks to see if we are mentioned in the message.
+     *
+     * @param  {String}  message  The message that was just sent by someone else.
+     * @return {Boolean}
+     */
+    isMentioned(message) {
+        return message.indexOf('<@' + bot.User.id + '>') > -1 || message.indexOf('<@!' + bot.User.id + '>') > -1;
+    }
+
+    /**
+     * The message that should be sent to users mentioning you while you're afk.
+     *
+     * @return {String}
+     */
+    get awayMessage() {
+        return '\u200B:wave: Hi there, I\'m currently AFK, I should be back soon.';
     }
 }
 

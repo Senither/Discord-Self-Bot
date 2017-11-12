@@ -7,5 +7,8 @@ module.exports = {
     envoyer: require('./utils/envoyer/Envoyer'),
 
     // Bot Version
-    version: require('../package').version
+    version: require('../package').version,
+
+    // Global Features Data
+    global: require('./GlobalData')
 };
