@@ -18,7 +18,7 @@ class MessageCreateEvent extends EventHandler {
      */
     handle(socket) {
         if (bot.User.id !== socket.message.author.id) {
-            if (app.global.away.enabled && this.isMentioned(socket.message.content)) {
+            if (app.global.away.enabled && (this.isMentioned(socket.message.content) || socket.message.isPrivate)) {
                 app.envoyer.sendNormalMessage(socket.message, this.awayMessage, {}, false).then(sentMessage => {
                     setTimeout(() => app.envoyer.delete(sentMessage), 12000);
                 });
